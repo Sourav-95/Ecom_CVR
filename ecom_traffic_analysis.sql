@@ -9,23 +9,23 @@ The project mail is sent on 2012-11-27, hence we will extract the data before th
 
 -- Top Traffic Source
 SELECT
-	utm_source,
+    utm_source,
     utm_campaign,
     http_referer,
     COUNT(DISTINCT website_session_id) AS sessions
 FROM website_sessions
 WHERE created_at < '2012-11-27'
 GROUP BY 
-	utm_source,
+    utm_source,
     utm_campaign,
     http_referer
 ORDER BY sessions DESC;
 
 -- Trend of session to order over the 8 months
 SELECT
-	YEAR(website_sessions.created_at) AS Yr,
+    YEAR(website_sessions.created_at) AS Yr,
     MONTH(website_sessions.created_at) AS Months,
-	COUNT(DISTINCT website_sessions.website_session_id) AS sessions,
+    COUNT(DISTINCT website_sessions.website_session_id) AS sessions,
     COUNT(DISTINCT orders.order_id) AS orders,
     COUNT(DISTINCT orders.order_id)/COUNT(DISTINCT website_sessions.website_session_id) AS conv_rate
 FROM website_sessions
@@ -39,7 +39,7 @@ GROUP BY 1,2;
 */
 
 SELECT
-	YEAR(website_sessions.created_at) AS Yr,
+    YEAR(website_sessions.created_at) AS Yr,
     MONTH(website_sessions.created_at) AS Months,
     COUNT(DISTINCT CASE WHEN utm_campaign = 'nonbrand' THEN website_sessions.website_session_id ELSE NULL END) AS nonbrand_sessions,
     COUNT(DISTINCT CASE WHEN utm_campaign = 'nonbrand' THEN orders.order_id ELSE NULL END) AS nonbrand_orders,
@@ -56,7 +56,7 @@ GROUP BY 1,2;
 */
 
 SELECT
-	YEAR(website_sessions.created_at) AS Yr,
+    YEAR(website_sessions.created_at) AS Yr,
     MONTH(website_sessions.created_at) AS Months,
     COUNT(DISTINCT CASE WHEN device_type = 'desktop' THEN website_sessions.website_session_id ELSE NULL END) AS desktop_sessions,
     COUNT(DISTINCT CASE WHEN device_type = 'desktop' THEN orders.order_id ELSE NULL END) AS desktop_orders,
@@ -76,7 +76,7 @@ Pulling the monthly trend for 'Gsearch' along side monthly trends for each of ou
 
 -- Finding various utm_sources and http referrer
 SELECT DISTINCT
-	utm_source,
+    utm_source,
     utm_campaign,
     http_referer
 FROM website_sessions
@@ -84,7 +84,7 @@ WHERE created_at < '2012-11-27';
 
 -- Monthly trend of all the traffic channels
 SELECT
-	YEAR(website_sessions.created_at) AS Yr,
+    YEAR(website_sessions.created_at) AS Yr,
     MONTH(website_sessions.created_at) AS Months,
     COUNT(DISTINCT CASE WHEN utm_source = 'gsearch' THEN website_sessions.website_session_id ELSE NULL END) AS gsearch_sessions,
     COUNT(DISTINCT CASE WHEN utm_source = 'bsearch' THEN website_sessions.website_session_id ELSE NULL END) AS bsearch_sessions,
@@ -102,7 +102,7 @@ and use nonbrand sessions and revenue since then to calculate the incremental va
 
 -- First we will look into the minimum test id when the test started?
 SELECT
-	MIN(website_pageview_id)
+    MIN(website_pageview_id)
 FROM website_pageviews
 WHERE pageview_url = '/lander-1';
 
@@ -111,7 +111,7 @@ WHERE pageview_url = '/lander-1';
 
 CREATE TEMPORARY TABLE first_pageviews
 SELECT
-	website_pageviews.website_session_id AS sessions,
+    website_pageviews.website_session_id AS sessions,
     MIN(website_pageviews.website_pageview_id) AS min_pv_id
 FROM website_pageviews
 INNER JOIN website_sessions
@@ -141,7 +141,7 @@ WHERE website_pageviews.pageview_url IN ('/home', '/lander-1');
 
 CREATE TEMPORARY TABLE nonbrand_sessions_w_orders
 SELECT 
-	nonbrand_test_w_landing_page.sessions,
+    nonbrand_test_w_landing_page.sessions,
     nonbrand_test_w_landing_page.landing_page,
     orders.order_id
 FROM nonbrand_test_w_landing_page
@@ -151,7 +151,7 @@ LEFT JOIN orders
 -- Now we will make a table to count the sessions and orders
 -- OUTPUT
 SELECT 
-	landing_page,
+    landing_page,
     COUNT(DISTINCT sessions) AS count_of_sessions,
     COUNT(DISTINCT order_id) AS count_of_orders,
     COUNT(DISTINCT order_id)/COUNT(DISTINCT sessions) AS cvr
@@ -161,7 +161,7 @@ GROUP BY 1;
 -- Now we will check the most recent pageviews for gsearch nonbrand traffic sent to home
 
 SELECT 
-	MAX(website_sessions.website_session_id) AS most_recent_gsearch_nonbrand_home_pageview
+    MAX(website_sessions.website_session_id) AS most_recent_gsearch_nonbrand_home_pageview
 FROM website_sessions
 LEFT JOIN website_pageviews
 	ON website_pageviews.website_session_id = website_sessions.website_session_id
@@ -175,7 +175,7 @@ WHERE utm_source='gsearch'
 -- We can count the no.of session after the test was initiated
 
 SELECT 
-	COUNT(website_sessions.website_session_id) AS sessions
+    COUNT(website_sessions.website_session_id) AS sessions
 FROM website_sessions
 WHERE created_at < '2012-11-27'
 	AND website_session_id > 17145
@@ -190,7 +190,7 @@ We can use the same time_period that we analyzed lastly (Jun 19 - Jul 28)
 
 CREATE TEMPORARY TABLE session_label_madeitflag
 SELECT 
-	website_session_id, 
+    website_session_id, 
     MAX(home_page) AS saw_home_page,
     MAX(lander_page) AS saw_lander_page,
     MAX(product_page) AS product_madeit,
@@ -201,7 +201,7 @@ SELECT
     MAX(thankyou_page) AS thankyou_madeit
 FROM(
 SELECT
-	website_sessions.website_session_id,
+    website_sessions.website_session_id,
     website_pageviews.pageview_url,
     -- website_pageviews.created_at AS pageview_created_at,																
     CASE WHEN pageview_url = '/home' THEN 1 ELSE 0 END AS home_page,
@@ -228,7 +228,7 @@ GROUP BY website_session_id;
 -- SEGMENT OF HOME PAGE & LANDER-1 PAGE CONVERSION
 SELECT 
 	CASE
-		WHEN saw_home_page = 1 THEN 'saw_homepage'
+	    WHEN saw_home_page = 1 THEN 'saw_homepage'
         WHEN saw_lander_page = 1 THEN 'saw_landerpage'
         ELSE 'check logic'
 	END AS segment,
@@ -244,7 +244,7 @@ GROUP BY 1;
 -- FINAL OUTPUT CONVERSION FUNNEL WITH CVR
 SELECT 
 	CASE
-		WHEN saw_home_page = 1 THEN 'saw_homepage'
+	    WHEN saw_home_page = 1 THEN 'saw_homepage'
         WHEN saw_lander_page = 1 THEN 'saw_landerpage'
         ELSE 'check logic'
 	END AS segment,
@@ -272,7 +272,7 @@ SELECT
     SUM(price_usd)/COUNT(DISTINCT website_session_id) AS revenue_per_billing_seen
 FROM(
 SELECT
-	website_pageviews.website_session_id,
+    website_pageviews.website_session_id,
     website_pageviews.pageview_url AS billing_version,
     orders.order_id,
     orders.price_usd
