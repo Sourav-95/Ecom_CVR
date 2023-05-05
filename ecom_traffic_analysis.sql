@@ -3,8 +3,7 @@ USE mavenfuzzyfactory;
 -- Tables of the schemas
 SHOW TABLES;
 
-/* 1. Gsearch seems to be the biggest driver of our business. 
-Can you pull monthly trends for gsearch sessions and orders so that we can showcase the growth there?
+/* 1. Gsearch seems to be the biggest driver of our business. Monthly trends for 'gsearch' sessions and orders so that we can showcase the growth there?
 The project mail is sent on 2012-11-27, hence we will extract the data before this date
 */
 
@@ -36,9 +35,7 @@ WHERE website_sessions.created_at < '2012-11-27'
 	AND website_sessions.utm_source = 'gsearch'
 GROUP BY 1,2;
 
-/* 2. Next it would be great to see a similar monthly trend for Gsearch, 
-but this time splitting out nonbrand and brand campaigns separately. 
-I am wondering if brand is picking up at all. If so, this is a good story to tell.
+/* 2. Next it would be great to see a similar monthly trend for Gsearch, but this time splitting out 'nonbrand' and 'brand' campaigns separately. 
 */
 
 SELECT
@@ -55,9 +52,9 @@ WHERE website_sessions.created_at < '2012-11-27'
 	AND website_sessions.utm_source = 'gsearch'
 GROUP BY 1,2;
 
-/* 3. While we are on Gsearch, could you dive into nonbrand, and pull monthly sessions and orders split by device type? 
-I want to flex our analytical muscles a little and show the board we really know our traffic sources.
+/* 3. While we are on 'Gsearch', could you dive into 'nonbrand', and pull monthly sessions and orders split by device type? 
 */
+
 SELECT
 	YEAR(website_sessions.created_at) AS Yr,
     MONTH(website_sessions.created_at) AS Months,
@@ -73,8 +70,8 @@ WHERE website_sessions.created_at < '2012-11-27'
     AND website_sessions.utm_campaign = 'nonbrand'
 GROUP BY 1,2;
 
-/* 4. Pessimistic board member may be concerned about the large % of traffic from Gsearch. 
-Pulling the monthly trend for Gsearch along side monthly trends for each of our channels?
+/* 4. Pessimistic board member may be concerned about the large % of traffic from 'Gsearch'. 
+Pulling the monthly trend for 'Gsearch' along side monthly trends for each of our channels?
 */
 
 -- Finding various utm_sources and http referrer
@@ -300,18 +297,3 @@ WHERE pageview_url IN ('/billing', '/billing-2')
 -- 1193 billing sessions past month
 -- LIFT : $8.51 per billing pageview
 -- VALUE OF BILLING TEST: $10,152
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
