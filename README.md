@@ -1,4 +1,5 @@
-# Ecom_CVR
+# Online_Store_Analysis
+This project is divided into two parts. In the 1st part we are going to analyze:
 Ecommerce Website Traffic Analysis for Conversion Rate from sessions to orders & quantifying the impact of Revenue Generation.
 <br> In this project we have initially looked into the traffic generating source. Next we have dig into the monthly trend of that particular source to check the Conversion Rate.
 Other than source we need to also focus on the paid campaigns. 
@@ -10,3 +11,9 @@ Other than source we need to also focus on the paid campaigns.
 <br>As we move to the next step, understanding the journey of a customer was very important to optimize the critical pain point of abandoning. 
 <br>Converers Funnel Analysis gives us the inference of these optimizing methods
 <br>'billing-2' was another billing page introduced to improve the conversion rate. Hence we also need to check the performance.
+In the 2nd Part we are going to analyze the growth factors story down the line of 2 years to convince the investors for funding.
+In order to do so, we have done time series analysis on Sessiona & orders
+Revenue with respect to sessions and orders
+We have also tried to uncover the rely of the business without the impact of the paid marketing campaigns
+Conversion Rate with respect to each of the campaigns
+Impact of the Products & cross selling product recommendations
